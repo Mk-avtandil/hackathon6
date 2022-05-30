@@ -8,6 +8,10 @@ urlpatterns = [
     path('api/v1/news/list/', NewsListView.as_view()),
     path('api/v1/news/<int:pk>', NewsDetailView.as_view()),
 
+    path('api/v1/video/create/', VideoCreateView.as_view()),
+    path('api/v1/video/list/', VideoListView.as_view()),
+    path('api/v1/video/<int:pk>', VideoDetailView.as_view()),
+
     ################# Django ################################
     path('', index, name='index'),
     path('about/', about, name='about'),

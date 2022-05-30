@@ -105,48 +105,21 @@
               <h4 class="widget-title">Recent Post</h4>
               <div class="divider"></div>
 
+              {% for i in popular_post %}
               <div class="blog-item">
-                  <a class="post-thumb" href="">
-                    <img src="{% static 'img/blog/blog-1.jpg' %}" alt="">
+                  <a class="post-thumb" href="{% url 'blog_details' i.pk %}">
+                    <img src="{{ i.image.url }}" alt="">
                   </a>
                   <div class="content">
-                    <h6 class="post-title"><a href="#">Even the all-powerful Pointing has no control</a></h6>
+                    <h6 class="post-title"><a href="#">{{ i.title }}</a></h6>
                     <div class="meta">
-                      <a href="#"><span class="mai-calendar"></span> July 12, 2018</a>
-                      <a href="#"><span class="mai-person"></span> Admin</a>
-                      <a href="#"><span class="mai-chatbubbles"></span> 19</a>
+                      <a href="#"><span class="mai-calendar"></span>{{ i.created }}</a>
+                      <a href="#"><span class="mai-person"></span>{{ i.author }}</a>
+                      <a href="#"><span class="mai-chatbubbles"></span>{{ i.postcomment_set.count }}</a>
                     </div>
                   </div>
               </div>
-
-              <div class="blog-item">
-                  <a class="post-thumb" href="">
-                    <img src="{% static 'img/blog/blog-2.jpg' %}" alt="">
-                  </a>
-                  <div class="content">
-                    <h6 class="post-title"><a href="#">Even the all-powerful Pointing has no control</a></h6>
-                    <div class="meta">
-                      <a href="#"><span class="mai-calendar"></span> July 12, 2018</a>
-                      <a href="#"><span class="mai-person"></span> Admin</a>
-                      <a href="#"><span class="mai-chatbubbles"></span> 19</a>
-                    </div>
-                  </div>
-              </div>
-
-              <div class="blog-item">
-                  <a class="post-thumb" href="">
-                    <img src="{% static 'img/blog/blog-3.jpg' %}" alt="">
-                  </a>
-                  <div class="content">
-                    <h6 class="post-title"><a href="#">Even the all-powerful Pointing has no control</a></h6>
-                    <div class="meta">
-                      <a href="#"><span class="mai-calendar"></span> July 12, 2018</a>
-                      <a href="#"><span class="mai-person"></span> Admin</a>
-                      <a href="#"><span class="mai-chatbubbles"></span> 19</a>
-                    </div>
-                  </div>
-              </div>
-
+              {% endfor %}
             </div>
           </div>
         </div>

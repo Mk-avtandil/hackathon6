@@ -11,6 +11,7 @@ from .models import *
 from .forms import *
 
 
+
 def index(request):
     video_post = Video.objects.first()
     popular_post = News.objects.all().order_by('-like').first()
@@ -51,6 +52,7 @@ def blog(request):
 
 def blog_details(request, pk):
     video_post = Video.objects.first()
+    popular_post = News.objects.order_by('-created')[:3]
     if request.method == 'POST':
         form = PostCommentForm(request.POST)
         if form.is_valid():
@@ -62,6 +64,7 @@ def blog_details(request, pk):
         'post': post,
         'form': form,
         'video_post': video_post,
+        'popular_post': popular_post
     }
     return render(request, 'blog-details.html', context=context)
 
@@ -102,6 +105,20 @@ class NewsListView(generics.ListAPIView):
 class NewsDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = News.objects.all()
     serializer_class = NewsDetailSerializers
+
+
+class VideoCreateView(generics.CreateAPIView):
+    serializer_class = VideoDetailSerializers
+
+
+class VideoListView(generics.ListAPIView):
+    queryset = Video.objects.all()
+    serializer_class = VideoDetailSerializers
+
+
+class VideoDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Video.objects.all()
+    serializer_class = VideoDetailSerializers
 
 
 class RegisterUser(CreateView):

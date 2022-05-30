@@ -5,7 +5,7 @@ from django.forms import ModelForm, Select, TextInput, Textarea
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from .models import PostComment
+from .models import *
 
 
 class RegisterUserForm(UserCreationForm):
@@ -42,4 +42,27 @@ class PostCommentForm(ModelForm):
             'comment': Textarea(attrs={
                 'class': 'form-control',
                 'placeholder': 'Comment'}),
+        }
+
+
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = Contact
+        fields = '__all__'
+        widgets = {
+            'firstname' : forms.TextInput(
+                attrs={'class' : 'form-control'}
+            ),
+            'lastname': forms.TextInput(
+                attrs={'class': 'form-control'}
+            ),
+            'email': forms.EmailInput(
+                attrs={'class': 'form-control'}
+            ),
+            'subject': forms.TextInput(
+                attrs={'class': 'form-control'}
+            ),
+               'message': forms.Textarea(
+                attrs={'class': 'form-control'}
+            )
         }

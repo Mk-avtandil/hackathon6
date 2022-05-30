@@ -12,6 +12,7 @@ from .forms import *
 
 
 def index(request):
+    video_post = Video.objects.first()
     popular_post = News.objects.all().order_by('-like').first()
     if News.objects.count() >= 3:
         three_popular_post = News.objects.all().order_by('-view_post')[:3]
@@ -23,29 +24,33 @@ def index(request):
     context = {
         'popular_post': popular_post,
         'three_post': three_post,
+        'video_post': video_post,
         'three_popular_post': three_popular_post
     }
     return render(request, 'index.html', context=context)
 
 
 def about(request):
+    video_post = Video.objects.first()
     popular_post = News.objects.all().order_by('-like').first()
-    context = {'popular_post': popular_post}
+    context = {'popular_post': popular_post, 'video_post': video_post,}
     return render(request, 'about.html', context=context)
 
 
 def blog(request):
+    video_post = Video.objects.first()
     category_post = request.GET.get('categories')
     print(category_post)
     if category_post in (None, 'AllCategories'):
         posts = News.objects.all()
     else:
         posts = News.objects.filter(choice=category_post)
-    context = {'posts': posts}
+    context = {'posts': posts, 'video_post': video_post,}
     return render(request, 'blog.html', context=context)
 
 
 def blog_details(request, pk):
+    video_post = Video.objects.first()
     if request.method == 'POST':
         form = PostCommentForm(request.POST)
         if form.is_valid():
@@ -55,22 +60,34 @@ def blog_details(request, pk):
     post = News.objects.get(pk=pk)
     context = {
         'post': post,
-        'form': form
+        'form': form,
+        'video_post': video_post,
     }
     return render(request, 'blog-details.html', context=context)
 
 
 def service(request):
+    video_post = Video.objects.first()
     if News.objects.count() >= 3:
         three_popular_post = News.objects.all().order_by('-view_post')[:3]
     else:
         three_popular_post = News.objects.all()
-    context = {'three_popular_post': three_popular_post}
+    context = {'three_popular_post': three_popular_post, 'video_post': video_post,}
     return render(request, 'service.html', context=context)
 
 
 def contact(request):
-    return render(request, 'contact.html')
+    video_post = Video.objects.first()
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('contact')
+    else:
+        form = ContactForm()
+    return render(request,
+                  'contact.html',
+                  context={'form': form, 'video_post': video_post,})
 
 
 class NewsCreateView(generics.CreateAPIView):

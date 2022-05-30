@@ -25,3 +25,23 @@ class PostComment(models.Model):
     like = models.TextField(choices=CHOICES)
     comment = models.TextField()
     news = models.ForeignKey(News, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.username
+
+
+class Contact(models.Model):
+    firstname = models.CharField(max_length=255)
+    lastname = models.CharField(max_length=255)
+    email = models.EmailField()
+    subject = models.CharField(max_length=255,blank=True)
+    message = models.TextField(max_length=2555, blank=True)
+
+    def __str__(self):
+        return self.subject
+
+
+class Video(models.Model):
+    videofile = models.FileField(upload_to='media/%Y/%m/%d')
+    title = models.CharField(max_length=255, blank=True)
+    description = models.CharField(max_length=255, blank=True)

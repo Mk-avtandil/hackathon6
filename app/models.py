@@ -14,6 +14,7 @@ class News(models.Model):
     choice = models.CharField(max_length=255, choices=CHOICES)
     author = models.CharField(max_length=255)
     like = models.IntegerField()
+    tags = models.CharField(max_length=255, blank=True) 
 
     def __str__(self):
         return self.title

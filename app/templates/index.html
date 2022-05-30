@@ -49,81 +49,21 @@
         <h2 class="title-section">How SEO Team Can Help</h2>
         <div class="divider mx-auto"></div>
       </div>
-
         <div class="row">
+          {% for i in tags %}
+            {% for j in i %}
           <div class="col-sm-6 col-lg-4 col-xl-3 py-3 wow zoomIn">
             <div class="features">
               <div class="header mb-3">
                 <span class="mai-business"></span>
               </div>
-              <h5>OnSite SEO</h5>
+                  <h5>{{j}}</h5>
+                
               <p>We analyse your website's structure, internal architecture & other key</p>
             </div>
           </div>
-          <div class="col-sm-6 col-lg-4 col-xl-3 py-3 wow zoomIn">
-            <div class="features">
-              <div class="header mb-3">
-                <span class="mai-business"></span>
-              </div>
-              <h5>OnSite SEO</h5>
-              <p>We analyse your website's structure, internal architecture & other key</p>
-            </div>
-          </div>
-          <div class="col-sm-6 col-lg-4 col-xl-3 py-3 wow zoomIn">
-            <div class="features">
-              <div class="header mb-3">
-                <span class="mai-business"></span>
-              </div>
-              <h5>OnSite SEO</h5>
-              <p>We analyse your website's structure, internal architecture & other key</p>
-            </div>
-          </div>
-          <div class="col-sm-6 col-lg-4 col-xl-3 py-3 wow zoomIn">
-            <div class="features">
-              <div class="header mb-3">
-                <span class="mai-business"></span>
-              </div>
-              <h5>OnSite SEO</h5>
-              <p>We analyse your website's structure, internal architecture & other key</p>
-            </div>
-          </div>
-          <div class="col-sm-6 col-lg-4 col-xl-3 py-3 wow zoomIn">
-            <div class="features">
-              <div class="header mb-3">
-                <span class="mai-business"></span>
-              </div>
-              <h5>OnSite SEO</h5>
-              <p>We analyse your website's structure, internal architecture & other key</p>
-            </div>
-          </div>
-          <div class="col-sm-6 col-lg-4 col-xl-3 py-3 wow zoomIn">
-            <div class="features">
-              <div class="header mb-3">
-                <span class="mai-business"></span>
-              </div>
-              <h5>OnSite SEO</h5>
-              <p>We analyse your website's structure, internal architecture & other key</p>
-            </div>
-          </div>
-          <div class="col-sm-6 col-lg-4 col-xl-3 py-3 wow zoomIn">
-            <div class="features">
-              <div class="header mb-3">
-                <span class="mai-business"></span>
-              </div>
-              <h5>OnSite SEO</h5>
-              <p>We analyse your website's structure, internal architecture & other key</p>
-            </div>
-          </div>
-          <div class="col-sm-6 col-lg-4 col-xl-3 py-3 wow zoomIn">
-            <div class="features">
-              <div class="header mb-3">
-                <span class="mai-business"></span>
-              </div>
-              <h5>OnSite SEO</h5>
-              <p>We analyse your website's structure, internal architecture & other key</p>
-            </div>
-          </div>
-        </div>
+          {% endfor %}
+              {% endfor %}
 
     </div> <!-- .container -->
   </div> <!-- .page-section -->

@@ -14,6 +14,8 @@ from .forms import *
 
 def index(request):
     video_post = Video.objects.first()
+    tags = News.objects.values_list('tags').distinct()
+    print(tags)
     popular_post = News.objects.all().order_by('-like').first()
     if News.objects.count() >= 3:
         three_popular_post = News.objects.all().order_by('-view_post')[:3]
@@ -26,7 +28,8 @@ def index(request):
         'popular_post': popular_post,
         'three_post': three_post,
         'video_post': video_post,
-        'three_popular_post': three_popular_post
+        'three_popular_post': three_popular_post,
+        'tags': tags
     }
     return render(request, 'index.html', context=context)
 

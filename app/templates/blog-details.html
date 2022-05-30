@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <div class="page-section pt-5">
+    <div class="container">
+      <nav aria-label="Breadcrumb">
+        <ul class="breadcrumb p-0 mb-0 bg-transparent">
+          <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+          <li class="breadcrumb-item"><a href="blog.html">Blog</a></li>
+          <li class="breadcrumb-item active">Second divided from form fish beastr</li>
+        </ul>
+      </nav>
+      
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="blog-single-wrap">
+            <div class="header">
+              <div class="post-thumb">
+                <img src="{{ post.image.url }}" alt="">
+              </div>
+              <div class="meta-header">
+                <div class="post-author">
+                  <div class="avatar">
+                    <img src="{% static 'img/person/person-icon.png' %}" alt="">
+                  </div>
+                  by <a href="#">{{ post.author }}</a>
+                </div>
+
+                <div class="post-sharer">
+                  <a href="#" class="btn social-facebook"><span class="mai-logo-facebook-f"></span></a>
+                  <a href="#" class="btn social-twitter"><span class="mai-logo-twitter"></span></a>
+                  <a href="#" class="btn social-linkedin"><span class="mai-logo-linkedin"></span></a>
+                  <a href="#" class="btn"><span class="mai-mail"></span></a>
+                </div>
+              </div>
+            </div>
+            <h1 class="post-title">{{ post.title }}</h1>
+            <div class="post-meta">
+              <div class="post-date">
+                <span class="icon">
+                  <span class="mai-time-outline"></span>
+                </span> <a href="#">{{ post.created }}</a>
+              </div>
+              <div class="post-comment-count ml-2">
+                <span class="icon">
+                  <span class="mai-chatbubbles-outline"></span>
+                </span> <a href="#">{{ post.postcomment_set.all.count }}</a>
+              </div>
+            </div>
+            <div class="post-content">
+              <p>{{ post.content }}</p>
+              {% for i in post.postcomment_set.all %}
+              <blockquote class="quote">{{ i.comment }}
+              <span class="author">@{{ i.username }}</span></blockquote>
+              {% endfor %}
+            </div>
+          </div>
+
+          {% if request.user.is_authenticated %}
+            <div class="comment-form-wrap pt-5">
+              <h2 class="mb-5">Leave a comment</h2>
+              <form method="post">
+                {% csrf_token %}
+                {{ form.username }}
+                <br>
+                {{ form.like }}
+                <br>
+                {{ form.comment }}
+                <br>
+                {{ form.news_set.all}}
+                <div class="form-group">
+                  <input type="submit" value="Post Comment" class="btn btn-primary">
+                </div>
+              </form>
+            </div>
+          {% else %}
+            <div class="comment-form-wrap pt-5">
+            <h2 style="color: red;" class="mb-5">Для того чтобы оставить комментарий <a href="{% url 'login' %}">войдите</a> или <a href="{% url 'register' %}">зарегистрируйтесь</a></h2>
+            </div>
+          {% endif %}
+
+        </div>
+        <div class="col-lg-4">
+          <div class="widget">
+            <!-- Widget search -->
+            <div class="widget-box">
+              <form action="#" class="search-widget">
+                <input type="text" class="form-control" placeholder="Enter keyword..">
+                <button type="submit" class="btn btn-primary btn-block">Search</button>
+              </form>
+            </div>
+
+            <!-- Widget Categories -->
+            <div class="widget-box">
+              <h4 class="widget-title">Category</h4>
+              <div class="divider"></div>
+
+              <ul class="categories">
+                <li><a href="#">{{ post.choice }}</a></li>
+              </ul>
+            </div>
+
+            <!-- Widget recent post -->
+            <div class="widget-box">
+              <h4 class="widget-title">Recent Post</h4>
+              <div class="divider"></div>
+
+              <div class="blog-item">
+                  <a class="post-thumb" href="">
+                    <img src="{% static 'img/blog/blog-1.jpg' %}" alt="">
+                  </a>
+                  <div class="content">
+                    <h6 class="post-title"><a href="#">Even the all-powerful Pointing has no control</a></h6>
+                    <div class="meta">
+                      <a href="#"><span class="mai-calendar"></span> July 12, 2018</a>
+                      <a href="#"><span class="mai-person"></span> Admin</a>
+                      <a href="#"><span class="mai-chatbubbles"></span> 19</a>
+                    </div>
+                  </div>
+              </div>
+
+              <div class="blog-item">
+                  <a class="post-thumb" href="">
+                    <img src="{% static 'img/blog/blog-2.jpg' %}" alt="">
+                  </a>
+                  <div class="content">
+                    <h6 class="post-title"><a href="#">Even the all-powerful Pointing has no control</a></h6>
+                    <div class="meta">
+                      <a href="#"><span class="mai-calendar"></span> July 12, 2018</a>
+                      <a href="#"><span class="mai-person"></span> Admin</a>
+                      <a href="#"><span class="mai-chatbubbles"></span> 19</a>
+                    </div>
+                  </div>
+              </div>
+
+              <div class="blog-item">
+                  <a class="post-thumb" href="">
+                    <img src="{% static 'img/blog/blog-3.jpg' %}" alt="">
+                  </a>
+                  <div class="content">
+                    <h6 class="post-title"><a href="#">Even the all-powerful Pointing has no control</a></h6>
+                    <div class="meta">
+                      <a href="#"><span class="mai-calendar"></span> July 12, 2018</a>
+                      <a href="#"><span class="mai-person"></span> Admin</a>
+                      <a href="#"><span class="mai-chatbubbles"></span> 19</a>
+                    </div>
+                  </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

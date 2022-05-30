@@ -67,24 +67,6 @@
         </div>
       </div>
     </nav>
-
-    <div class="container">
-      <div class="page-banner home-banner">
-        <div class="row align-items-center flex-wrap-reverse h-100">
-          <div class="col-md-6 py-5 wow fadeInLeft">
-            <h1 class="mb-4">{{ video_post.title }}</h1>
-            <p class="text-lg text-grey mb-5">{{ video_post.description }}</p>
-            <a href="#" class="btn btn-primary btn-split">Watch Video <div class="fab"><span class="mai-play"></span></div></a>
-          </div>
-          <div class="col-md-6 py-5 wow zoomIn">
-            <div class="img-fluid text-center">
-              <video style="width: 100%;" src="{{ video_post.videofile.url }}" autoplay loop>
-            </div>
-          </div>
-        </div>
-        <a href="#about" class="btn-scroll" data-role="smoothscroll"><span class="mai-arrow-down"></span></a>
-      </div>
-    </div>
   </header>
 
   {% block content %}
@@ -108,7 +90,7 @@
         <div class="col-lg-3 py-3">
           <h5>Company</h5>
           <ul class="footer-menu">
-            <li><a href="#">About Us</a></li>
+            <li><a href="{% url 'about' %}">About Us</a></li>
             <li><a href="#">Career</a></li>
             <li><a href="#">Advertise</a></li>
             <li><a href="#">Terms of Service</a></li>
@@ -124,8 +106,9 @@
         <div class="col-lg-3 py-3">
           <h5>Newsletter</h5>
           <p>Get updates, news or events on your mail.</p>
-          <form action="#">
-            <input type="text" class="form-control" placeholder="Enter your email..">
+          <form method="post">
+            {%csrf_token%}
+            {{form.mail}}
             <button type="submit" class="btn btn-success btn-block mt-2">Subscribe</button>
           </form>
         </div>

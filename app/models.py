@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class News(models.Model):
     CHOICES = (
@@ -7,31 +8,37 @@ class News(models.Model):
         ('Healthy', 'Healthy'),
         ('Food', 'Food'))
     title = models.CharField(max_length=255)
-    content = models.TextField()
-    image = models.FileField(upload_to='media/%Y/%m/%d')
+    content = models.TextField(blank=True)
+    image = models.FileField(upload_to='media/%Y/%m/%d', blank=True)
     created = models.DateTimeField(auto_now_add=True)
-    view_post = models.IntegerField()
+    view_post = models.IntegerField(blank=True, default='0')
     choice = models.CharField(max_length=255, choices=CHOICES)
     author = models.CharField(max_length=255)
-    like = models.IntegerField()
-    tags = models.CharField(max_length=255, blank=True) 
+    like = models.IntegerField(default='0')
+    tags = models.CharField(max_length=255, blank=True)
+
+    class Meta:
+        verbose_name_plural = "Новости"
 
     def __str__(self):
         return self.title
 
 
 class PostComment(models.Model):
+    class Meta:
+        verbose_name_plural = "Комменты и лайки"
+        
     CHOICES = (('like', 'like'),('dislike', 'dislike'))
-    username = models.CharField(max_length=255)
-    like = models.TextField(choices=CHOICES)
-    comment = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    like = models.CharField(max_length=255, blank=True, choices=CHOICES)
+    comment = models.TextField(blank=True)
     news = models.ForeignKey(News, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.username
 
 
 class Contact(models.Model):
+    class Meta:
+        verbose_name_plural = "Контакты"
+
     firstname = models.CharField(max_length=255)
     lastname = models.CharField(max_length=255)
     email = models.EmailField()
@@ -43,6 +50,16 @@ class Contact(models.Model):
 
 
 class Video(models.Model):
+    class Meta:
+        verbose_name_plural = "Видео"
+
     videofile = models.FileField(upload_to='media/%Y/%m/%d')
     title = models.CharField(max_length=255, blank=True)
     description = models.CharField(max_length=255, blank=True)
+
+    def __str__(self):
+        return self.title
+
+
+class Email(models.Model):
+    mail = models.EmailField(blank=True)

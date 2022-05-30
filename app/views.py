@@ -1,89 +1,107 @@
-from unicodedata import category
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 from django.contrib.auth import logout, login
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from rest_framework import generics
+from django.core.mail import send_mail
+from app.forms import EmailForm
 from .serializers import *
 from .models import *
 from .forms import *
 
 
-
 def index(request):
-    video_post = Video.objects.first()
+    video_post = Video.objects.order_by('?').first()
     tags = News.objects.values_list('tags').distinct()
-    print(tags)
-    popular_post = News.objects.all().order_by('-like').first()
+    popular_post = News.objects.order_by('-like').first()
     if News.objects.count() >= 3:
-        three_popular_post = News.objects.all().order_by('-view_post')[:3]
-        three_post = News.objects.all().order_by('view_post')[:3]
+        three_popular_post = News.objects.order_by('-view_post')[:3]
+        three_post = News.objects.order_by('view_post')[:3]
     else:
         three_popular_post = News.objects.all()
         three_post = News.objects.all()
+
+    if request.method == 'POST':
+        if 'mail' in request.POST:
+            form = EmailForm(request.POST)
+            mail = request.POST['mail']
+            send_mail(
+                'Ваша почту одобрена!!!',
+                'Поздравляем ваша почта успешно потдверждена.',
+                'seogram2022@gmail.com',
+                [mail],
+                fail_silently=False)
+            if form.is_valid():
+                form.save()
+    form = EmailForm()
 
     context = {
         'popular_post': popular_post,
         'three_post': three_post,
         'video_post': video_post,
         'three_popular_post': three_popular_post,
-        'tags': tags
+        'tags': tags,
+        'form':form
     }
     return render(request, 'index.html', context=context)
 
 
 def about(request):
-    video_post = Video.objects.first()
-    popular_post = News.objects.all().order_by('-like').first()
-    context = {'popular_post': popular_post, 'video_post': video_post,}
+    popular_post = News.objects.order_by('-like').first()
+    context = {'popular_post': popular_post}
     return render(request, 'about.html', context=context)
 
 
 def blog(request):
-    video_post = Video.objects.first()
+    search_post = request.GET.get('query')
     category_post = request.GET.get('categories')
-    print(category_post)
-    if category_post in (None, 'AllCategories'):
+    if category_post in (None, 'AllCategories') and search_post in (None, ''):
         posts = News.objects.all()
+    elif search_post != '':
+        if search_post.isdigit():
+            posts =  News.objects.filter(created__year=search_post)
+        else:
+            posts = News.objects.filter(title=search_post)
     else:
         posts = News.objects.filter(choice=category_post)
-    context = {'posts': posts, 'video_post': video_post,}
+    context = {
+        'posts': posts,
+        }
     return render(request, 'blog.html', context=context)
 
 
 def blog_details(request, pk):
-    video_post = Video.objects.first()
     popular_post = News.objects.order_by('-created')[:3]
     if request.method == 'POST':
         form = PostCommentForm(request.POST)
         if form.is_valid():
+            form.save(commit=False)
+            form.instance.user = request.user
+            form.instance.news = News.objects.get(id=pk)
             form.save()
+            form = PostCommentForm()
     else:
         form = PostCommentForm()
     post = News.objects.get(pk=pk)
     context = {
         'post': post,
         'form': form,
-        'video_post': video_post,
         'popular_post': popular_post
     }
     return render(request, 'blog-details.html', context=context)
 
 
 def service(request):
-    video_post = Video.objects.first()
     if News.objects.count() >= 3:
-        three_popular_post = News.objects.all().order_by('-view_post')[:3]
+        three_popular_post = News.objects.order_by('-view_post')[:3]
     else:
         three_popular_post = News.objects.all()
-    context = {'three_popular_post': three_popular_post, 'video_post': video_post,}
+    context = {'three_popular_post': three_popular_post}
     return render(request, 'service.html', context=context)
 
 
 def contact(request):
-    video_post = Video.objects.first()
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
@@ -91,9 +109,7 @@ def contact(request):
             return redirect('contact')
     else:
         form = ContactForm()
-    return render(request,
-                  'contact.html',
-                  context={'form': form, 'video_post': video_post,})
+    return render(request, 'contact.html', context={'form': form})
 
 
 class NewsCreateView(generics.CreateAPIView):

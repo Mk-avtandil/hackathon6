@@ -44,14 +44,14 @@
               <div class="post-comment-count ml-2">
                 <span class="icon">
                   <span class="mai-chatbubbles-outline"></span>
-                </span> <a href="#">{{ post.postcomment_set.all.count }}</a>
+                </span> <a href="#">{{ post.postcomment_set.count }}</a>
               </div>
             </div>
             <div class="post-content">
               <p>{{ post.content }}</p>
               {% for i in post.postcomment_set.all %}
               <blockquote class="quote">{{ i.comment }}
-              <span class="author">@{{ i.username }}</span></blockquote>
+              <span class="author">@{{ i.user }}</span></blockquote>
               {% endfor %}
             </div>
           </div>
@@ -67,7 +67,7 @@
                 <br>
                 {{ form.comment }}
                 <br>
-                {{ form.news_set.all}}
+                {{ form.news_set.all }}
                 <div class="form-group">
                   <input type="submit" value="Post Comment" class="btn btn-primary">
                 </div>
@@ -111,10 +111,12 @@
                     <img src="{{ i.image.url }}" alt="">
                   </a>
                   <div class="content">
-                    <h6 class="post-title"><a href="#">{{ i.title }}</a></h6>
+                    <h6 class="post-title"><a href="{% url 'blog_details' i.pk %}">{{ i.title }}</a></h6>
                     <div class="meta">
                       <a href="#"><span class="mai-calendar"></span>{{ i.created }}</a>
+                      <br>
                       <a href="#"><span class="mai-person"></span>{{ i.author }}</a>
+                      <br>
                       <a href="#"><span class="mai-chatbubbles"></span>{{ i.postcomment_set.count }}</a>
                     </div>
                   </div>

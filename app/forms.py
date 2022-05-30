@@ -4,7 +4,7 @@ from django import forms
 from django.forms import ModelForm, Select, TextInput, Textarea
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
+from django.forms import TextInput, Textarea, EmailInput
 from .models import *
 
 
@@ -28,13 +28,9 @@ class LoginUserForm(AuthenticationForm):
 class PostCommentForm(ModelForm):
     class Meta:
         model = PostComment
-        fields = ['username', 'like', 'comment']
+        fields = ['like', 'comment']
 
         widgets = {
-            'username': TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Name'}),
-
             'like': Select(attrs={
                 'class': 'form-control',
                 'placeholder': 'Like or dislike'}),
@@ -65,4 +61,17 @@ class ContactForm(forms.ModelForm):
                'message': forms.Textarea(
                 attrs={'class': 'form-control'}
             )
+        }
+
+
+class EmailForm(forms.ModelForm):
+    class Meta:
+        model = Email
+        fields = ['mail']
+        widgets = {
+            'mail' : EmailInput(attrs={
+                'name':'mail',
+                'class':'form-control',
+                'placeholder':'Enter your email..'
+            })
         }

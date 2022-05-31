@@ -50,8 +50,12 @@ def index(request):
 
 
 def about(request):
+    services = Service.objects.all()
     popular_post = News.objects.order_by('-like').first()
-    context = {'popular_post': popular_post}
+    context = {
+        'popular_post': popular_post,
+        'services': services
+    }
     return render(request, 'about.html', context=context)
 
 

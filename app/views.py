@@ -12,6 +12,7 @@ from .forms import *
 
 
 def index(request):
+    services = Service.objects.all()
     video_post = Video.objects.order_by('?').first()
     tags = News.objects.values_list('tags').distinct()
     popular_post = News.objects.order_by('-like').first()
@@ -42,7 +43,8 @@ def index(request):
         'video_post': video_post,
         'three_popular_post': three_popular_post,
         'tags': tags,
-        'form':form
+        'form':form,
+        'services': services
     }
     return render(request, 'index.html', context=context)
 
@@ -138,6 +140,20 @@ class VideoListView(generics.ListAPIView):
 class VideoDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Video.objects.all()
     serializer_class = VideoDetailSerializers
+
+
+class ServiceCreateView(generics.CreateAPIView):
+    serializer_class = ServiceDetailSerializers
+
+
+class ServiceListView(generics.ListAPIView):
+    queryset = Service.objects.all()
+    serializer_class = ServiceDetailSerializers
+
+
+class ServiceDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Service.objects.all()
+    serializer_class = ServiceDetailSerializers
 
 
 class RegisterUser(CreateView):

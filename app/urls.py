@@ -12,6 +12,10 @@ urlpatterns = [
     path('api/v1/video/list/', VideoListView.as_view()),
     path('api/v1/video/<int:pk>', VideoDetailView.as_view()),
 
+    path('api/v1/service/create/', ServiceCreateView.as_view()),
+    path('api/v1/service/list/', ServiceListView.as_view()),
+    path('api/v1/service/<int:pk>', ServiceDetailView.as_view()),
+
     ################# Django ################################
     path('', index, name='index'),
     path('about/', about, name='about'),

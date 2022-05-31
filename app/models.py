@@ -63,3 +63,19 @@ class Video(models.Model):
 
 class Email(models.Model):
     mail = models.EmailField(blank=True)
+
+
+class Service(models.Model):
+    class Meta:
+        verbose_name_plural = "Сервисы"
+
+    type = models.CharField(max_length=255)
+    price = models.IntegerField()
+    analytics_count = models.IntegerField()
+    change_count = models.IntegerField()
+    social_media = models.CharField(max_length=255)
+    count_of_optimization = models.IntegerField()
+    support = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.type 

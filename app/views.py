@@ -5,6 +5,7 @@ from django.contrib.auth import logout, login
 from django.contrib.auth.views import LoginView
 from rest_framework import generics
 from django.core.mail import send_mail
+from django.core.paginator import Paginator
 from app.forms import EmailForm
 from .serializers import *
 from .models import *
@@ -60,6 +61,7 @@ def about(request):
 
 
 def blog(request):
+    
     search_post = request.GET.get('query')
     category_post = request.GET.get('categories')
     if category_post in (None, 'AllCategories') and search_post in (None, ''):
@@ -71,9 +73,16 @@ def blog(request):
             posts = News.objects.filter(title=search_post)
     else:
         posts = News.objects.filter(choice=category_post)
+
+    bl_paginator = Paginator(posts, 3)
+    page_num = request.GET.get('page')
+    page = bl_paginator.get_page(page_num)
+
     context = {
         'posts': posts,
-        }
+        'page': page,
+        'count': bl_paginator.count
+    }
     return render(request, 'blog.html', context=context)
 
 
